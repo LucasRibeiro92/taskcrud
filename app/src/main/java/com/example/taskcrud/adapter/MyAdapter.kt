@@ -6,11 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import android.content.Context
+import java.util.ArrayList
 import com.example.taskcrud.R
 import com.example.taskcrud.classes.TaskData
 import com.example.taskcrud.database.DatabaseHelper
 
-class MyAdapter(private val dataList: List<TaskData>, private val context: Context) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class MyAdapter(private val dataList: List<TaskData>, private val dbHelper: DatabaseHelper) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTaskTextView: TextView = itemView.findViewById(R.id.nameTaskTextView)
@@ -31,7 +32,7 @@ class MyAdapter(private val dataList: List<TaskData>, private val context: Conte
     }
 
     fun removeItem(position: Int) {
-        val deletedItem = TaskData.removeAt(position)
+        val deletedItem = dataList[position]
         dbHelper.deleteTask(deletedItem.id)
         notifyItemRemoved(position)
     }

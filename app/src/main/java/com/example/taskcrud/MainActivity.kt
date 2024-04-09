@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.taskcrud.adapter.*
 import com.example.taskcrud.classes.*
 
@@ -16,6 +17,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val dbHelper = DatabaseHelper(this)
+        // Suponha que você tenha uma lista de TaskData chamada dataList
+        var dataList = dbHelper.readAllData()
+        // Crie uma instância do adaptador e defina-o na RecyclerView
+        var adapter = MyAdapter(dataList, dbHelper)
 
         val editTextTask = findViewById<EditText>(R.id.editTextTask)
         val buttonAddTask = findViewById<Button>(R.id.buttonAddTask)
@@ -23,11 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         recyclerViewTasks.layoutManager = LinearLayoutManager(this)
 
-        // Suponha que você tenha uma lista de TaskData chamada dataList
-        var dataList = dbHelper.readAllData()
-
-        // Crie uma instância do adaptador e defina-o na RecyclerView
-        var adapter = MyAdapter(dataList, this)
         recyclerViewTasks.adapter = adapter
 
         buttonAddTask.setOnClickListener {
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                 editTextTask.setText("")
 
                 dataList = dbHelper.readAllData()
-                adapter = MyAdapter(dataList, this)
+                adapter = MyAdapter(dataList, dbHelper)
                 recyclerViewTasks.adapter = adapter
             }
         }
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val itemTouchHelper = ItemTouchHelper(itemTouchHelperCallback)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+        itemTouchHelper.attachToRecyclerView(recyclerViewTasks)
     }
 }
 

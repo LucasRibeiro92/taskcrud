@@ -70,10 +70,9 @@ class DatabaseHelper(context: MainActivity) : SQLiteOpenHelper(context, DATABASE
         return rowsUpdated
     }
 
-    fun deleteData(id: Int): Int {
-        val db = writableDatabase
-        val rowsDeleted = db.delete(TABLE_NAME, "$COLUMN_ID=?", arrayOf(id.toString()))
+    fun deleteTask(taskId: Int) {
+        val db = this.writableDatabase
+        db.delete(TABLE_NAME, "$COLUMN_ID = ?", arrayOf(taskId.toString()))
         db.close()
-        return rowsDeleted
     }
 }
